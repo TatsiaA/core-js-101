@@ -246,8 +246,9 @@ function getRectangleString(width, height) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  return str.replace(/[A-Za-z]/g, (cipher) => String.fromCharCode(cipher.charCodeAt(0)
+    + (cipher.toUpperCase() <= 'M' ? 13 : -13)));
 }
 
 /**
@@ -292,8 +293,20 @@ function isString(value) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+function getCardId(value) {
+  const arr = value.split('');
+  let num;
+  let figure;
+  if (arr.length > 2) {
+    figure = arr.splice(2, 1).toString();
+    num = arr.join('');
+  } else {
+    [num, figure] = arr;
+  }
+  const numbers = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+  const figures = ['♣', '♦', '♥', '♠'];
+  const id = numbers.indexOf(num) + 13 * figures.indexOf(figure);
+  return id;
 }
 
 
